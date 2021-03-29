@@ -8,16 +8,22 @@ import { useHistory, useLocation } from 'react-router';
 
 const SearchBar: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const searchInputRef        = useRef<string | null>(null);
+    const [searchInput, setSearchInput] = useState<string>("");
     const { state, dispatch }   = useContext(AppContext);
     const history               = useHistory();
     const location              = useLocation();
-    const delayedQuery          = useRef(debounce( (q) => searchAndNavigate(q), 500)).current;
+    const delayedQuery          = useRef(debounce( (q) => searchAndNavigate(q), 1000)).current;
 
     function searchAndNavigate(q: string) {
         if (q) { // must be a search; navigating back in browser produces no search and pushes "/"
             const newPath = q.replace(/ /g, '-');
             const fullPath = `${location.pathname}/${newPath}`;
             dispatch({ type: ACTIONS.SET_PREV_LOCATION, payload: history.location.pathname});
+            dispatch({
+                type: ACTIONS.SET_SEARCH,
+                payload: searchInputRef.current
+            });
             history.push({
                 pathname: fullPath,
                 state: {
@@ -29,22 +35,20 @@ const SearchBar: React.FC = () => {
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         let { value } = e.target;
-        dispatch({
-            type: ACTIONS.SET_SEARCH,
-            payload: value
-        });
+        setSearchInput(value);
     }
 
     useEffect(() => {
-        delayedQuery(state.search);
-    }, [state.search])
+        searchInputRef.current = searchInput;
+        delayedQuery(searchInput);
+    }, [searchInput])
 
     return (
         <div className={s.wrap}>
             <Input
                 placeholder="search artists..."
                 loading={loading}
-                value={state.search}
+                value={searchInput}
                 onChange={handleChange}
                 name="search"
                 className={s.searchBar}

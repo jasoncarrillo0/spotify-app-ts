@@ -6,22 +6,14 @@ import { basicKeyObj } from '../../service/interfaces';
 import ArtistCard from './ArtistCard';
 import s from './ArtistDeck.module.scss';
 const ArtistDeck: React.FC = () => {
-    const history                             = useHistory();
     const { state }                           = useContext(AppContext);
     const [artists, setArtists]               = useState<basicKeyObj[]>([]);
     const [error, setError]                   = useState<boolean>(false);
     const [isLoading, setIsLoading]           = useState<boolean>(false);
     const [hasMoreArtists, setHasMoreArtists] = useState<boolean>(false);
     const [offset, setOffset]                 = useState<number>(0);
-    const lastArtistRef                       = useRef<HTMLDivElement | null>(null)
-    const entry                               = useIntersectionObserver(lastArtistRef, {});
-    const isVisible                           = !!entry?.isIntersecting
     const RESULTS_LIMIT                       = 15;
 
-    
-    if (isVisible) {
-        console.log("VISIBLE")
-    }
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -57,6 +49,7 @@ const ArtistDeck: React.FC = () => {
     
             }
         };
+        console.log("FETching data")
         fetchData();
     }, [offset, state.search]);
     
@@ -66,22 +59,26 @@ const ArtistDeck: React.FC = () => {
             {
                 !isLoading || !error ? (
                     artists.map((artist, idx) => {
-                        if (artists.length === idx + 1) {
-                            return (
-                                <ArtistCard 
-                                    key={idx} 
-                                    ref={lastArtistRef}
-                                    {...artist}
-                                />
-                            )
-                        } else {
-                           return (
-                                <ArtistCard
-                                    key={idx} 
-                                    {...artist}
-                                />
-                           )
-                        }
+                        // if (artists.length === idx + 1) {
+                        //     return (
+                        //         <ArtistCard 
+                        //             key={idx} 
+                        //             {...artist}
+                        //         />
+                        //     )
+                        // } else {
+                        //    return (
+                        //         <ArtistCard
+                        //             key={idx} 
+                        //             {...artist}
+                        //         />
+                        //    )
+                        // }
+                        return idx + 1 === artists.length ? (
+                            <ArtistCard key={idx} {...artist} isLast={true}/>
+                        ) : (
+                            <ArtistCard key={idx} {...artist}/>
+                        )
                     }
                 )) : (null)
             }

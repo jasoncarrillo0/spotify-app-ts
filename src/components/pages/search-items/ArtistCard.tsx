@@ -1,11 +1,11 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useRef } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom';
-import { returnStarIcons } from '../../service/helpers';
+import { returnStarIcons, useIntersectionObserver } from '../../service/helpers';
 import { basicKeyObj } from '../../service/interfaces';
 import s from './ArtistCard.module.scss';
 
 // for some reason the forwardRef <> args are opposite the function
-const ArtistCard = forwardRef<HTMLDivElement | null, basicKeyObj>((props, ref) => {
+const ArtistCard: React.FC<basicKeyObj> = (props) => {
 
     // needed for use in forwardRef
     let { url } = useRouteMatch();
@@ -14,9 +14,14 @@ const ArtistCard = forwardRef<HTMLDivElement | null, basicKeyObj>((props, ref) =
         color: 'unset'
     }
 
+    const ref = useRef<HTMLDivElement | null>(null)
+    const entry = useIntersectionObserver(ref, {})
+    const isVisible = !!entry?.isIntersecting
+    if (isVisible) console.log("FIREDDEEDSASFAS")
+
     return (
         <Link to={`${url}/` + props.name.replace(/ /g, '-') + "/albums"} style={linkStyles}>
-            <div ref={ref} className={s.artistCard}>
+            <div ref={props.isLast ? ref : null} className={s.artistCard}>
                 <div className={s.artistImgWrapper}>
                     <img src={props.images[0] ? props.images[0].url : "/img/spotify-logo.png"} className={s.artistImgTop} alt="artist"/>
                 </div>
@@ -28,7 +33,7 @@ const ArtistCard = forwardRef<HTMLDivElement | null, basicKeyObj>((props, ref) =
             </div>
         </Link>
     )
-});
+};
     
 
 export default ArtistCard;
