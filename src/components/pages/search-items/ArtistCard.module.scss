@@ -1,0 +1,63 @@
+.artistCard {
+    border: solid grey;
+    border-radius: 4px;
+    height: 265px;
+    position: relative;
+    margin: 30px 42px;
+    cursor: pointer;
+
+    .artistImgWrapper {
+        height: 160px;
+        width: 160px;
+        position: relative;
+        background-color: #efefef;
+
+        .artistImgTop {
+            max-height: 160px;
+            max-width: 160px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }        
+    }
+
+    .artistInfo {
+        border-top: solid 1px #a7a7a7;
+        padding-left: 8px;
+        max-width: 160px;
+
+        .artistTitle {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            width: 147px;
+            font-size: 13px;
+            font-weight: bold;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        .followerText {
+            margin-bottom: 0px;
+            font-size: 10px;
+        }
+    }
+
+    .artistRating {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 0;
+        padding-left: 8px;
+        padding-bottom: 4px;
+    }
+}
+
+
+
+
+
+
+
+

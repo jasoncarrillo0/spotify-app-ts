@@ -2,11 +2,17 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import 'semantic-ui-css/semantic.min.css'
-function App() {
+import { ContextProvider } from './service/context';
+import SearchPage from './pages/SearchPage';
+
+const App: React.FC = () => {
   return (
-    <Switch>
-        <Route exact path="/" component={LoginPage}/>
-    </Switch>
+      <ContextProvider>
+        <Switch>
+            <Route exact path="/" component={LoginPage}/>
+            <Route path="/search" component={SearchPage}/>
+        </Switch>
+      </ContextProvider>
   );
 }
 
