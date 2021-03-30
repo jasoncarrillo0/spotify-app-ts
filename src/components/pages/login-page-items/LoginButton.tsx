@@ -6,15 +6,7 @@ import { AppContext } from '../../service/context';
 import './LoginButton.module.scss'
 
 const LoginButton: React.FC = () => {
-
     const { dispatch } = useContext(AppContext);
-
-    useEffect(() => {
-        return () => {
-            console.log("Unmounted login button")
-        }
-    }, []) 
-
     return (
         <a href={REQUEST_STRING}>
             <Button onClick={() => dispatch({ type: ACTIONS.SET_THEME, payload: "black"})} color='black'>
@@ -22,7 +14,6 @@ const LoginButton: React.FC = () => {
                 Login
             </Button>
         </a>
-        
     );
 };
 

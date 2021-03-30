@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useContext, useState, useRef, useEffect } from 'react';
 import { Input } from 'semantic-ui-react';
 import { ACTIONS } from '../../service/constants';
+import { useLocation } from 'react-router';
 import { AppContext } from '../../service/context';
 import debounce from 'lodash.debounce'
 import { useHistory } from 'react-router';
@@ -11,7 +12,24 @@ const SearchBar: React.FC = () => {
     const [searchInput, setSearchInput] = useState<string>("");
     const { state, dispatch }   = useContext(AppContext);
     const history               = useHistory();
+    const location              = useLocation();
     const delayedQuery          = useRef(debounce( (q) => searchAndNavigate(q), 500)).current;
+
+    // handle 3 scenarios: 1st arrival at /search, new search, and coming back from albums
+    
+
+    
+
+    useEffect(() => {
+        const urlArray = location.pathname.split('/');
+        const param    = urlArray[urlArray.length - 1];
+        const len      = urlArray.length;
+        if (param !== 'search' && len === 3) { // avoids first arrival at /search, and first search entry
+            if (param !== state.search) {
+                setSearchInput(param);
+            }
+        }
+    }, [history.location.pathname])
 
     function searchAndNavigate(q: string) {
 
@@ -22,6 +40,10 @@ const SearchBar: React.FC = () => {
             type: ACTIONS.SET_SEARCH,
             payload: searchInputRef.current
         });
+        dispatch({
+            type: ACTIONS.SET_PREV_LOCATION,
+            payload: '/search' + searchInputRef.current
+        })
 
         if (q) { // must be a search; navigating back in browser produces no search and pushes "/"
             const newPath = q.replace(/ /g, '-');

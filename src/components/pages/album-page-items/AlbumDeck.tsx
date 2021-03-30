@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { REQ_LIMIT, RESULTS_LIMIT } from '../../service/constants';
 import { AppContext } from '../../service/context';
 import { getFullAlbumReq } from '../../service/helpers';
 import { Album } from '../../service/interfaces';
@@ -11,7 +12,8 @@ const AlbumDeck: React.FC = () => {
     const [error, setError]                   = useState<boolean>(false);
     const [isLoading, setIsLoading]           = useState<boolean>(false);
     const [offset, setOffset]                 = useState<number>(0);
-    const RESULTS_LIMIT                       = 15;
+    const [reqCount, setReqCount]             = useState<number>(0);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,13 +32,14 @@ const AlbumDeck: React.FC = () => {
                         return json.items;
                     }
                 });
+                setReqCount(c => c + 1);
                 setIsLoading(false)
             }
             catch (error) {
                 setError(true);
             }
         }
-        fetchData();
+        if (reqCount < REQ_LIMIT) fetchData();
     }, [offset]);
 
     return (

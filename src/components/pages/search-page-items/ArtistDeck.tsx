@@ -1,22 +1,33 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router';
+import { ACTIONS, REQ_LIMIT, RESULTS_LIMIT } from '../../service/constants';
 import { AppContext } from '../../service/context';
 import { getFullArtistReq } from '../../service/helpers';
 import { Artist } from '../../service/interfaces';
 import ArtistCard from './ArtistCard';
 import s from './ArtistDeck.module.scss';
-
 const ArtistDeck: React.FC = () => {
-    const { state }                           = useContext(AppContext);
+    const { state, dispatch }                 = useContext(AppContext);
+    const location                            = useLocation();
     const [artists, setArtists]               = useState<Artist[]>([]);
     const [error, setError]                   = useState<boolean>(false);
     const [isLoading, setIsLoading]           = useState<boolean>(false);
     const [hasMoreArtists, setHasMoreArtists] = useState<boolean>(false);
+    const [showScrollCards, setShowScrollCards] = useState<boolean>(false);
     const [offset, setOffset]                 = useState<number>(0);
-    const RESULTS_LIMIT                       = 15;
+    const [reqCount, setReqCount]             = useState<number>(0);
 
     useEffect(() => {
+        if (hasMoreArtists && !isLoading && !error && artists.length > 0) {
+            setShowScrollCards(true);
+        } else {
+            setShowScrollCards(false);
+        }
+    });
+
+    useEffect(() => {
+        let currSearch = state.search.replace(/ /g, '-');
         const fetchData = async () => {
-            const currSearch = state.search.replace(/ /g, '-');
             if (currSearch) {
                 try {
                     let reqWithOffset = getFullArtistReq(currSearch, state.accessToken, RESULTS_LIMIT, offset);
@@ -38,6 +49,7 @@ const ArtistDeck: React.FC = () => {
                             return json.artists.items;
                         }
                     });
+                    setReqCount(c => c + 1);
                     if (json.artists.next) { setHasMoreArtists(true) }
                     else {setHasMoreArtists(false)}                              
                     setIsLoading(false)
@@ -51,12 +63,16 @@ const ArtistDeck: React.FC = () => {
                 setOffset(0);
             }
         };
-        fetchData();
+        if (reqCount < REQ_LIMIT) {
+            fetchData();
+        }
     }, [offset, state.search]);
 
     useEffect(() => {
         if (state.search) {
             setIsLoading(true);
+            setReqCount(0);
+            setOffset(0);
         }
     }, [state.search]);
     
@@ -64,7 +80,7 @@ const ArtistDeck: React.FC = () => {
     return (
         <div className={s.wrapper}>
             {
-                artists.length > 0 && !isLoading && !error && hasMoreArtists ? (
+                showScrollCards ? (
                     artists.map((artist, idx) => {
                         return idx + 1 === artists.length ? (
                             <ArtistCard 
@@ -76,17 +92,17 @@ const ArtistDeck: React.FC = () => {
                             <ArtistCard key={idx} {...artist}/>
                         )
                     }
-                )) : (null)
-            }
-            {
-                !hasMoreArtists ? (
+                )) : (
                     artists.map((artist, idx) => {
                         return <ArtistCard key={idx} {...artist}/>
                     })
-                ) : (null)
+                )
             }
             {
                 isLoading ? <div>Loading...</div> : null
+            }
+            {
+                error ? <div>Error.</div> : null
             }
         </div>
     )

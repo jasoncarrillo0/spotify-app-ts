@@ -1,7 +1,8 @@
 import { Action } from './interfaces'
 import { InitialStateType } from './types'
 const REQUEST_STRING = "https://accounts.spotify.com/authorize?client_id=53e524bb7e4e45db9a0ccb031ea81aaa&response_type=token&redirect_uri=http://localhost:3000/search"
-
+const RESULTS_LIMIT  = 15;
+const REQ_LIMIT      = 10;
 const ACTIONS        = {
     SET_ACCESS_TOKEN: "SET_ACCESS_TOKEN",
     SET_THEME: "SET_THEME",
@@ -44,4 +45,11 @@ const appReducer = (state: InitialStateType, action: Action) => {
     }
 }
 
-export { appReducer, REQUEST_STRING, ACTIONS }
+
+
+export { 
+    appReducer, 
+    REQUEST_STRING, 
+    ACTIONS,
+    REQ_LIMIT, RESULTS_LIMIT
+}
