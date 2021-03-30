@@ -1,13 +1,25 @@
-import React from 'react';
-import { returnAlbumPicUrl, returnArtistsString, returnArtistStyle, returnTitleStyle } from '../../service/helpers';
+import React, { useRef, useEffect } from 'react';
+import { returnAlbumPicUrl, returnArtistsString, returnArtistStyle, returnTitleStyle, useIntersectionObserver } from '../../service/helpers';
 import { AlbumProps } from '../../service/interfaces';
 import s from './AlbumCard.module.scss';
 
 const AlbumCard: React.FC<AlbumProps> = (props) => {
-    console.log(props);
+
+    const ref       = useRef<HTMLDivElement | null>(null)
+    const entry     = useIntersectionObserver(ref, {})
+    const isVisible = !!entry?.isIntersecting
+    
+    useEffect(() => {
+        if (isVisible && props.isLast) {
+            if (props.incOffset) {
+                props.incOffset();
+            }
+        }
+    }, [isVisible]);
+
     const artistsString = returnArtistsString(props.artists);
     return (
-        <div className={s.albumCard}>
+        <div ref={props.isLast ? ref : null} className={s.albumCard}>
             <div className={s.albumImgWrapper}>
                 <img src={returnAlbumPicUrl(props.images)} className={s.albumImgTop} alt="album"/>
             </div>

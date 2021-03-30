@@ -6,7 +6,7 @@ import ArtistCard from './ArtistCard';
 import s from './ArtistDeck.module.scss';
 
 const ArtistDeck: React.FC = () => {
-    const { state, dispatch }                 = useContext(AppContext);
+    const { state }                           = useContext(AppContext);
     const [artists, setArtists]               = useState<Artist[]>([]);
     const [error, setError]                   = useState<boolean>(false);
     const [isLoading, setIsLoading]           = useState<boolean>(false);

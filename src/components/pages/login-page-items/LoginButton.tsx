@@ -7,7 +7,7 @@ import './LoginButton.module.scss'
 
 const LoginButton: React.FC = () => {
 
-    const { state, dispatch } = useContext(AppContext);
+    const { dispatch } = useContext(AppContext);
 
     useEffect(() => {
         return () => {

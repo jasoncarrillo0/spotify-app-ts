@@ -3,7 +3,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { ACTIONS } from '../../service/constants';
 import { AppContext } from '../../service/context';
 import { returnStarIcons, useIntersectionObserver } from '../../service/helpers';
-import { Artist, ArtistProps } from '../../service/interfaces';
+import { ArtistProps } from '../../service/interfaces';
 import s from './ArtistCard.module.scss';
 
 
