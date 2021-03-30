@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { ACTIONS } from '../service/constants';
 import { AppContext } from '../service/context';
 import { cutToken } from '../service/helpers';
-import ArtistDeck from './search-items/ArtistDeck';
-import SearchBar from './search-items/SearchBar';
+import ArtistDeck from './search-page-items/ArtistDeck';
+import SearchBar from './search-page-items/SearchBar';
 
 const SearchPage: React.FC = () => {
     const { dispatch } = useContext(AppContext);

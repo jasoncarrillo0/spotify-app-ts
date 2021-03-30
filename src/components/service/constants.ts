@@ -6,7 +6,8 @@ const ACTIONS        = {
     SET_ACCESS_TOKEN: "SET_ACCESS_TOKEN",
     SET_THEME: "SET_THEME",
     SET_PREV_LOCATION: "SET_PREV_LOCATION",
-    SET_SEARCH: "SET_SEARCH"
+    SET_SEARCH: "SET_SEARCH",
+    SET_ARTIST_ID: "SET_ARTIST_ID"
 }
 
 const appReducer = (state: InitialStateType, action: Action) => {
@@ -30,6 +31,11 @@ const appReducer = (state: InitialStateType, action: Action) => {
             return {
                 ...state,
                 prevLocation: action.payload
+            }
+        case ACTIONS.SET_ARTIST_ID:
+            return {
+                ...state,
+                artistId: action.payload
             }
         default:
             return {

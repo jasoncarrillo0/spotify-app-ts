@@ -8,7 +8,8 @@ const INITIAL_STATE = {
     accessToken: "",
     theme: "",
     prevLocation: "",
-    search: ""
+    search: "",
+    artistId: ""
 }
 
 const AppContext = React.createContext

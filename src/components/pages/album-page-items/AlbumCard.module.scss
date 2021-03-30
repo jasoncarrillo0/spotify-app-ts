@@ -1,0 +1,78 @@
+.albumCard {
+    border: solid grey;
+    border-radius: 4px;
+    height: 275px;
+    width: 160px;
+    position: relative;
+    margin: 30px 42px;
+
+    .albumImgWrapper {
+        height: 160px;
+        position: absolute;
+        top: 0;
+
+        .albumImgTop {
+            max-height: 160px;
+            max-width: 100%;
+        }
+    }
+
+    .infoSection {
+        padding-left: 4px;
+        padding-right: 4px;
+        width: 100%;
+        background-color: white;
+        position: absolute;
+        top: 150px;
+
+        .albumTitle {
+            display: block;
+            width: 100%;
+            font-size: 14px;
+            word-wrap: break-word;
+            white-space: normal;
+            font-weight: bold;
+        }
+
+        .albumDetails {
+            font-size: 10px;
+            margin-top: 0;
+            
+            p {
+                margin-bottom: 0px;
+            }
+
+            .albumArtist {
+                font-size: 10px;
+                margin-bottom: 7px;
+            }
+        }
+    }
+
+    .previewLink {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        background-color: rgb(212, 212, 212);
+        border-top: 1px solid grey;
+        padding: 2px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
