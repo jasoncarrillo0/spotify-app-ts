@@ -1,0 +1,12 @@
+.notFound {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 12rem;
+    
+    div {
+        font-size: 40px; 
+        font-weight: bold;
+        margin-top: 2rem;
+    }
+}

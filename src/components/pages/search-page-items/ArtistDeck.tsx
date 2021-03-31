@@ -12,13 +12,17 @@ const ArtistDeck: React.FC = () => {
     const [artists, setArtists]               = useState<Artist[]>([]);
     const [error, setError]                   = useState<boolean>(false);
     const [isLoading, setIsLoading]           = useState<boolean>(false);
-    const [hasMoreArtists, setHasMoreArtists] = useState<boolean>(false);
     const [showScrollCards, setShowScrollCards] = useState<boolean>(false);
     const [offset, setOffset]                 = useState<number>(0);
     const [reqCount, setReqCount]             = useState<number>(0);
+    const msgStyles = {
+        marginLeft: '42px',
+        marginBottom: '2rem',
+        width: '100%'
+    }
 
     useEffect(() => {
-        if (hasMoreArtists && !isLoading && !error && artists.length > 0) {
+        if (!isLoading && !error && artists.length > 0) {
             setShowScrollCards(true);
         } else {
             setShowScrollCards(false);
@@ -50,8 +54,6 @@ const ArtistDeck: React.FC = () => {
                         }
                     });
                     setReqCount(c => c + 1);
-                    if (json.artists.next) { setHasMoreArtists(true) }
-                    else {setHasMoreArtists(false)}                              
                     setIsLoading(false)
                 }
                 catch (error) {
@@ -92,17 +94,16 @@ const ArtistDeck: React.FC = () => {
                             <ArtistCard key={idx} {...artist}/>
                         )
                     }
-                )) : (
-                    artists.map((artist, idx) => {
-                        return <ArtistCard key={idx} {...artist}/>
-                    })
-                )
+                )) : (null)
             }
             {
-                isLoading ? <div>Loading...</div> : null
+                isLoading ? <div style={msgStyles}>Loading...</div> : null
             }
             {
-                error ? <div>Error.</div> : null
+                error ? <div style={msgStyles}>Error.</div> : null
+            }
+            {
+                reqCount === REQ_LIMIT && <div style={msgStyles}>Request limit reached for this search.</div>
             }
         </div>
     )

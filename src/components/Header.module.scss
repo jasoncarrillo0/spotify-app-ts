@@ -1,0 +1,12 @@
+.wrap {
+    height: 4rem;
+    background-color: rgb(188, 188, 188);
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    div {
+        margin-left: 4rem;
+        color: white;
+        font-weight: bold;
+    }
+}

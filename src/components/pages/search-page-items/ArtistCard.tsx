@@ -50,7 +50,7 @@ const ArtistCard: React.FC<ArtistProps> = (props) => {
                 </div>
                 <div className={s.artistInfo}>
                     <span className={s.artistTitle}>{props.name}</span>
-                    <p className={s.followerText}>{props.followers.total} followers</p>
+                    <p className={s.followerText}>{props.followers.total.toLocaleString()} followers</p>
                 </div>
                 <p className={s.artistRating}>{returnStarIcons(props.popularity)}</p>
             </div>

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useState, useRef, useEffect } from 'react';
 import { Input } from 'semantic-ui-react';
 import { ACTIONS } from '../../service/constants';
-import { useLocation } from 'react-router';
+import { Redirect, useLocation } from 'react-router';
 import { AppContext } from '../../service/context';
 import debounce from 'lodash.debounce'
 import { useHistory } from 'react-router';
@@ -10,15 +10,20 @@ import s from './SearchBar.module.scss';
 const SearchBar: React.FC = () => {
     const searchInputRef        = useRef<string | null>(null);
     const [searchInput, setSearchInput] = useState<string>("");
+    const inputRef              = useRef<any>(null);
     const { state, dispatch }   = useContext(AppContext);
+    const [stateLoaded, setStateLoaded] = useState<boolean>(true);
     const history               = useHistory();
     const location              = useLocation();
     const delayedQuery          = useRef(debounce( (q) => searchAndNavigate(q), 500)).current;
 
     // handle 3 scenarios: 1st arrival at /search, new search, and coming back from albums
     
+    useEffect(() => {
+        if (!state.accessToken) {
 
-    
+        }
+    }, [state.accessToken])
 
     useEffect(() => {
         const urlArray = location.pathname.split('/');
@@ -27,6 +32,11 @@ const SearchBar: React.FC = () => {
         if (param !== 'search' && len === 3) { // avoids first arrival at /search, and first search entry
             if (param !== state.search) {
                 setSearchInput(param);
+            } else {
+                setSearchInput(state.search);
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                }
             }
         }
     }, [history.location.pathname])
@@ -75,15 +85,16 @@ const SearchBar: React.FC = () => {
     }, [searchInput])
 
     return (
-        <div className={s.wrap}>
-            <Input
-                placeholder="search artists..."
-                value={searchInput}
-                onChange={handleChange}
-                name="search"
-                className={s.searchBar}
-            />
-        </div>
+            <div className={s.wrap}>
+                <Input
+                    placeholder="search artists..."
+                    value={searchInput}
+                    onChange={handleChange}
+                    name="search"
+                    className={s.searchBar}
+                    ref={inputRef}
+                />
+            </div>
     );
 };
 

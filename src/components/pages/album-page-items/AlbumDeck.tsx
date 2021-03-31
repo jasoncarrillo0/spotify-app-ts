@@ -13,7 +13,12 @@ const AlbumDeck: React.FC = () => {
     const [isLoading, setIsLoading]           = useState<boolean>(false);
     const [offset, setOffset]                 = useState<number>(0);
     const [reqCount, setReqCount]             = useState<number>(0);
-
+    const msgStyles = {
+        marginLeft: '44px',
+        marginBottom: '2rem',
+        marginTop: '2rem',
+        width: '100%'
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,10 +64,13 @@ const AlbumDeck: React.FC = () => {
             })
         }
         {
-            isLoading && <div>Loading...</div>
+            isLoading && <div style={msgStyles}>Loading...</div>
         }
         {
-            error && <div>Error.</div>
+            error && <div style={msgStyles}>Error.</div>
+        }
+        {
+            reqCount === REQ_LIMIT && <div style={msgStyles}>Request limit reached for this search.</div>
         }
         </div>
     );
